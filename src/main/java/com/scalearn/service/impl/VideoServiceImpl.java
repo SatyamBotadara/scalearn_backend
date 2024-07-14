@@ -1,5 +1,6 @@
 package com.scalearn.service.impl;
 
+import com.scalearn.dto.BasePathEnum;
 import com.scalearn.dto.VideoDto;
 import com.scalearn.entity.Video;
 import com.scalearn.exception.custom.DuplicateIdException;
@@ -54,7 +55,7 @@ public class VideoServiceImpl implements VideoService {
 
         // adding image path
         // create directory for video using video uuid
-        var videoDataDir = videoUtility.createVideoDirectory(id);
+        var videoDataDir = videoUtility.createVideoDirectory(id,BasePathEnum.VIDEO);
         video.setDataDir(videoDataDir);
 
         list.add(video);
@@ -73,7 +74,7 @@ public class VideoServiceImpl implements VideoService {
             throw new ItemNotFoundException("Video not found of id "+id);
         }
         videoRepository.delete(video.get());
-        videoUtility.deleteVideoDirectory(video.get().getId());
+        videoUtility.deleteVideoDirectory(video.get().getId(),BasePathEnum.VIDEO);
     } 
 
     // update video

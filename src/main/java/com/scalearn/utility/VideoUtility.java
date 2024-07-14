@@ -1,9 +1,9 @@
 package com.scalearn.utility;
 
+import com.scalearn.dto.BasePathEnum;
 import com.scalearn.exception.custom.CustomException;
 import com.scalearn.exception.custom.DuplicateIdException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -12,34 +12,36 @@ import java.io.File;
 @Log4j2
 public class VideoUtility {
 
-    @Value("${application.data.basePath}")
-    private String basePath;
-
-    public String createVideoDirectory(String videoId) {
+    public String createVideoDirectory(String id,BasePathEnum basePathEnum) {
+        // getting basepath from enum
+        String basePath = basePathEnum.getPath();
         // get base path from properties file
-         var videoDirPath = basePath+"/"+videoId;
+         var videoDirPath = basePath+"/"+id;
          File videoDir = new File(videoDirPath);
          if(videoDir.exists() || videoDir.isDirectory()) {
-             log.error("Video directory already present with same id "+videoId+" and it try to recreate");
-             throw new DuplicateIdException("Video Directory already created with id: "+videoId+" ,please contact admin");
+             log.error("Directory already present with same id "+id+" and it try to recreate");
+             throw new DuplicateIdException("Directory already created with id: "+id+" ,please contact admin");
          }
          if(videoDir.mkdirs()) {
              return videoDir.getAbsolutePath();
          }
          log.error("Unable to create directory path at "+videoDir.getAbsolutePath());
-         throw new CustomException("Unable to create video directory please contact Admin");
+         throw new CustomException("Unable to create directory please contact Admin");
     }
     
-    public void deleteVideoDirectory(String videoId) {
-        var videoDirPath = basePath+"/"+videoId;
+    public void deleteVideoDirectory(String id,BasePathEnum basePathEnum) {
+        // getting basepath from enum
+        String basePath = basePathEnum.getPath();
+
+        var videoDirPath = basePath+"/"+id;
         File videoDir = new File(videoDirPath);
 
         if(videoDir.exists()){
            if(videoDir.delete()) {
-             log.info("Video dir deleted with id : "+videoId);
+             log.info("Dir deleted with id : "+id);
            }
         } else {
-            log.error("Video dir not exists with id : "+videoId);
+            log.error("Dir not exists with id : "+id);
         }
     }
 }
