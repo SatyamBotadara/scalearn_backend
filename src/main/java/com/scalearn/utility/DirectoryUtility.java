@@ -10,9 +10,9 @@ import java.io.File;
 
 @Component
 @Log4j2
-public class VideoUtility {
+public class DirectoryUtility {
 
-    public String createVideoDirectory(String id,BasePathEnum basePathEnum) {
+    public String createDirectory(String id,BasePathEnum basePathEnum) {
         // getting basepath from enum
         String basePath = basePathEnum.getPath();
         // get base path from properties file
@@ -29,7 +29,7 @@ public class VideoUtility {
          throw new CustomException("Unable to create directory please contact Admin");
     }
     
-    public void deleteVideoDirectory(String id,BasePathEnum basePathEnum) {
+    public void deleteDirectory(String id,BasePathEnum basePathEnum) {
         // getting basepath from enum
         String basePath = basePathEnum.getPath();
 

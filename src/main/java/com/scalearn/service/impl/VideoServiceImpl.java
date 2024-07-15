@@ -8,7 +8,7 @@ import com.scalearn.exception.custom.ItemNotFoundException;
 import com.scalearn.repository.PlaylistRepo;
 import com.scalearn.repository.VideoRepository;
 import com.scalearn.service.VideoService;
-import com.scalearn.utility.VideoUtility;
+import com.scalearn.utility.DirectoryUtility;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +27,7 @@ public class VideoServiceImpl implements VideoService {
 
     private final PlaylistRepo playlistRepo;
 
-    private final VideoUtility videoUtility;
+    private final DirectoryUtility dirUtility;
 
     @Override
     public Video insertVideo(Video video,String playlistId) throws DuplicateIdException {
@@ -55,7 +55,7 @@ public class VideoServiceImpl implements VideoService {
 
         // adding image path
         // create directory for video using video uuid
-        var videoDataDir = videoUtility.createVideoDirectory(id,BasePathEnum.VIDEO);
+        var videoDataDir = dirUtility.createDirectory(id,BasePathEnum.VIDEO);
         video.setDataDir(videoDataDir);
 
         list.add(video);
@@ -74,7 +74,7 @@ public class VideoServiceImpl implements VideoService {
             throw new ItemNotFoundException("Video not found of id "+id);
         }
         videoRepository.delete(video.get());
-        videoUtility.deleteVideoDirectory(video.get().getId(),BasePathEnum.VIDEO);
+        dirUtility.deleteDirectory(video.get().getId(),BasePathEnum.VIDEO);
     } 
 
     // update video

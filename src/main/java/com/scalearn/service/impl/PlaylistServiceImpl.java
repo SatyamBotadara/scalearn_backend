@@ -1,5 +1,6 @@
 package com.scalearn.service.impl;
 
+import com.scalearn.dto.BasePathEnum;
 import com.scalearn.dto.PlayListDto;
 import com.scalearn.entity.Playlist;
 import com.scalearn.exception.custom.CustomException;
@@ -8,6 +9,8 @@ import com.scalearn.exception.custom.ItemNotFoundException;
 import com.scalearn.repository.PlaylistRepo;
 import com.scalearn.service.PlaylistService;
 import com.scalearn.service.VideoService;
+import com.scalearn.utility.DirectoryUtility;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -15,14 +18,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 @Service
 @Log4j2
+@AllArgsConstructor
 public class PlaylistServiceImpl implements PlaylistService {
 
     private final PlaylistRepo playlistRepo;
 
     private final VideoService videoService;
+
+    private final DirectoryUtility dirUtility;
 
     @Override
     public Playlist insertPlaylist( Playlist playlist ) {
@@ -34,7 +39,9 @@ public class PlaylistServiceImpl implements PlaylistService {
             log.error("Playlist id -> {} is already present in database",playlist.getId());
             throw new DuplicateIdException("Playlist id already present");
         }
-        return playlistRepo.save(playlist);
+        var playlistDb = playlistRepo.save(playlist);
+        dirUtility.createDirectory(playlistDb.getId(), BasePathEnum.PLAYLIST);
+        return playlistDb;
     }
 
     @Override
@@ -50,12 +57,15 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void deletePlaylistById(String id) throws ItemNotFoundException {
-        var playlist = playlistRepo.findById(id).orElseThrow(() -> new ItemNotFoundException("Playlist not found of id "+id));
+        var playlist = playlistRepo.findById(id).orElseThrow(() ->
+         new ItemNotFoundException("Playlist not found of id "+id));
         // delete each video inside playlist
         playlist.getVideoList().forEach(playlistElement->
                 videoService.deleteVideoById(playlistElement.getId()));
+        
         // delete playlist
         playlistRepo.deleteById(id);
+        dirUtility.deleteDirectory(id,BasePathEnum.PLAYLIST);
     }
 
     @Override
