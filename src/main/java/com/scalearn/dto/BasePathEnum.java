@@ -1,11 +1,12 @@
 package com.scalearn.dto;
-import org.springframework.beans.factory.annotation.Value;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public enum BasePathEnum {
     VIDEO("/video"),PLAYLIST("/playlist");
 
-    @Value("${application.data.basePath}")
-    private String basePath;
+    private final String basePath = ScalearnProps.BasePathDto.basePath;
 
     private String path;
 
@@ -13,6 +14,7 @@ public enum BasePathEnum {
         this.path = this.basePath+endPoint;
     }
     public String getPath() {
+        log.info("basepath "+basePath);
         return path;
     }
 }

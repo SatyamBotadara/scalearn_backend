@@ -16,16 +16,18 @@ public class DirectoryUtility {
         // getting basepath from enum
         String basePath = basePathEnum.getPath();
         // get base path from properties file
-         var videoDirPath = basePath+"/"+id;
-         File videoDir = new File(videoDirPath);
-         if(videoDir.exists() || videoDir.isDirectory()) {
+         var dirPath = basePath+"/"+id;
+         File dir = new File(dirPath);
+         if(dir.exists() || dir.isDirectory()) {
              log.error("Directory already present with same id "+id+" and it try to recreate");
              throw new DuplicateIdException("Directory already created with id: "+id+" ,please contact admin");
          }
-         if(videoDir.mkdirs()) {
-             return videoDir.getAbsolutePath();
+         log.info("Creating dir at "+dirPath);
+         if(dir.mkdirs()) {
+             log.info("dir is created");
+             return dir.getAbsolutePath();
          }
-         log.error("Unable to create directory path at "+videoDir.getAbsolutePath());
+         log.error("Unable to create directory path at "+dir.getAbsolutePath());
          throw new CustomException("Unable to create directory please contact Admin");
     }
     

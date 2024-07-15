@@ -32,8 +32,7 @@ public class Playlist {
     private String author;
 
     // playlist thumbnail
-    @NotBlank(message = "Playlist thumbnail image is required")
-    private String imageUrl;
+    private String dirPath;
 
     @NotBlank(message = "Playlist price is required")
     private String price;

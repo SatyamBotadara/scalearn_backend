@@ -39,9 +39,9 @@ public class PlaylistServiceImpl implements PlaylistService {
             log.error("Playlist id -> {} is already present in database",playlist.getId());
             throw new DuplicateIdException("Playlist id already present");
         }
-        var playlistDb = playlistRepo.save(playlist);
-        dirUtility.createDirectory(playlistDb.getId(), BasePathEnum.PLAYLIST);
-        return playlistDb;
+        var dirPath = dirUtility.createDirectory(playlist.getId(), BasePathEnum.PLAYLIST);
+        playlist.setDirPath(dirPath);
+        return playlistRepo.save(playlist);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlistDb.setDesc(playlist.getDesc());
         playlistDb.setAuthor(playlist.getAuthor());
         playlistDb.setDuration(playlist.getDuration());
-        playlistDb.setImageUrl(playlist.getImageUrl());
+        playlistDb.setDirPath(playlist.getDirPath());
         playlistDb.setPrice(playlist.getPrice());
         playlistDb.setIsPremium(playlist.getIsPremium());
 

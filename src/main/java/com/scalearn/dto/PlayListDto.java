@@ -22,7 +22,7 @@ public class PlayListDto {
         this.id = playlist.getId();
         this.title = playlist.getTitle();
         this.duration = playlist.getDuration();
-        this.imageUrl = playlist.getImageUrl();
+        this.imageUrl = playlist.getDirPath();
         this.playlistType = playlist.getPlaylistType();
         this.isPremium = playlist.getIsPremium();
     }
