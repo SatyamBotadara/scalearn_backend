@@ -1,3 +1,2 @@
-docker network create mongo_net &&
-docker run -d -p 27017:27017 -v data:/data -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root --name=mongodb --network=mongo_net mongo:latest &&
-docker run -d -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=root -e ME_CONFIG_MONGODB_ADMINPASSWORD=root -e ME_CONFIG_MONGODB_SERVER=mongodb -e ME_CONFIG_BASICAUTH_USERNAME=root -e ME_CONFIG_BASICAUTH_PASSWORD=root --network=mongo_net --name mongo-express mongo-express 
+docker run -d -p 27017:27017 -v data:/data -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root --name=mongodb --network=scalearn_net mongo:latest &&
+docker run -d -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=root -e ME_CONFIG_MONGODB_ADMINPASSWORD=root -e ME_CONFIG_MONGODB_SERVER=mongodb -e ME_CONFIG_BASICAUTH_USERNAME=root -e ME_CONFIG_BASICAUTH_PASSWORD=root --network=scalearn_net --name mongo-express mongo-express 

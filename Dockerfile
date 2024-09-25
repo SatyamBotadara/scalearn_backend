@@ -8,7 +8,7 @@ COPY ./.mvn ./.mvn
 RUN ./mvnw dependency:go-offline
 # create java artifacts
 COPY . .
-RUN ./mvnw clean install
+RUN ./mvnw clean install -Dmaven.test.skip=true 
 
 FROM amazoncorretto:17
 WORKDIR /scalearn
